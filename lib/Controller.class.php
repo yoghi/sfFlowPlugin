@@ -60,6 +60,8 @@ class sfFlow_Controller
   	
   	/** why noy use request from sfContext ?? */
   	
+  	/** sfContext::getInstance()->getRequest() */
+  	
     $state = $this->continue->getState();
     if (!isset($this->stateMap[$state])) {
       throw new Exception(sprintf('The state [%s] is not registered.', $state));
