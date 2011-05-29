@@ -47,6 +47,10 @@ class sfFlow_State extends ArrayIterator
     $this->eventMap = new ArrayObject(array());
     $this->eventMapIterator = $this->eventMap->getIterator();
   }
+  
+  public function __toString(){
+  	 return (string)$this->state;
+  }
 
   /**
    * getter $template

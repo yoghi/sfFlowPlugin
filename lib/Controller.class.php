@@ -32,7 +32,7 @@ class sfFlow_Controller
     }
     
     $this->continue = $continue;
-    $this->stateMap = array();
+    $this->stateMap = array($initState);
   }
 
   /**
@@ -57,11 +57,13 @@ class sfFlow_Controller
    */
   public function execute(sfWebRequest $request)
   {
+  	
+  	/** why noy use request from sfContext ?? */
+  	
     $state = $this->continue->getState();
     if (!isset($this->stateMap[$state])) {
       throw new Exception(sprintf('The state [%s] is not registered.', $state));
     }
-    
     foreach ($this->stateMap[$state] as $event => $callable) {
       if ($this->continue->happenEvent($event)) {
         if (is_callable($callable)) {
