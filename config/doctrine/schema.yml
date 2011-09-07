@@ -1,0 +1,67 @@
+sfFlowExection:
+  columns:
+    id: { type: integer(4), notnull: true, primary: true, autoincrement: true } 
+    workflow: { type: integer(4), notnull: true } 
+    parent: { type: integer(4), notnull: true }
+    started: { type: boolean, default: false, notnull: true }
+    suspended: { type: boolean, default: false }
+    variables: { type: blob }
+    waitingfor: { type: blob }
+    threads: { type: blob }
+    next_thread_id: { type: integer(4), notnull: true }
+  relations:
+    Workflow: { local: workflow, foreign: id, class: sfFlowWorkflow }
+  options: 
+    type: INNODB
+    charset: utf8
+
+sfFlowState:
+  columns:
+    id: { type: integer(4), notnull: true, primary: true, autoincrement: true } 
+    exectution: { type: integer(4), notnull: true }
+    state: { type: blob }
+    actived_from: { type: blob }
+    thread: { type: integer(4), notnull: true }
+  relations:
+    Execution: { local: exectution, foreign: id, class: sfFlowExection }
+  actAs:
+    Versionable: ~
+    Timestampable: ~
+  options: 
+    type: INNODB
+    charset: utf8
+
+sfFlowNode:
+  columns:
+    id: { type: integer(4), notnull: true, primary: true, autoincrement: true }
+    workflow: { type: integer(4), notnull: true }
+    class: { type: string, notnull: true }
+    configuration: { type: blob }
+  relations:
+    Workflow: { local: workflow, foreign: id, class: sfFlowWorkflow }
+  options: 
+    type: INNODB
+    charset: utf8
+
+sfFlowNodeConnection:
+  columns:
+    id: { type: integer(4), notnull: true, primary: true, autoincrement: true }
+    incoming: { type: integer(4), notnull: true } 
+    outgoing: { type: integer(4), notnull: true } 
+  relations:
+    Incoming: { local: incoming, foreign: id, class: sfFlowNode }
+    Outgoing: { local: outgoing, foreign: id, class: sfFlowNode }
+  options: 
+    type: INNODB
+    charset: utf8
+
+sfFlowWorkflow:
+  columns:
+    id: { type: integer(4), notnull: true, primary: true, autoincrement: true }
+    name: { type: string, notnull: true }
+    version: { type: integer(4), notnull: true }
+    created: { type: boolean, default: false, notnull: true }
+  options: 
+    type: INNODB
+    charset: utf8
+    
